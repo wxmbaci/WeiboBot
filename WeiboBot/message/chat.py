@@ -32,7 +32,7 @@ class Chat:
                 msg = Message()
                 msg.parse(v)
                 self.msg_list.append(msg)
-        if data["users"] is Not None:
+        if "users" in data:
             for k, v in data["users"].items():
                 user = User()
                 user.parse(v)
