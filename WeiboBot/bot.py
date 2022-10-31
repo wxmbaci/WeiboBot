@@ -207,6 +207,26 @@ class Bot(User):
         chat.parse(result["data"])
         self.logger.info(f"私信成功")
         return chat
+    
+    async def send_group_message(self, gid: Union[str, int], content: str = "", file_path: str = "") -> Union[Chat, None]:
+        """
+         向群组并返回聊天对象
+
+        :param gid:群组gid
+        :param content:文本内容
+        :param file_path:附件
+        :return: 聊天对象
+        """
+        result = await self.nettool.send_group_message(gid, content, file_path)
+        try:
+            self.check_result(result)
+        except Exception as e:
+            self.logger.error(f"私信错误 {gid} {result} {e}")
+            return None
+        chat = Chat()
+        chat.parse(result["data"])
+        self.logger.info(f"向群组发送消息成功")
+        return chat
 
     async def comment_weibo(self, mid: Union[str, int], content: str = "", file_path: str = "") -> Union[Comment, None]:
         result = await self.nettool.comment_weibo(mid, content, file_path)

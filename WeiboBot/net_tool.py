@@ -174,6 +174,31 @@ class NetTool:
 
         return await self.post("https://m.weibo.cn/api/chat/send", params=params)
 
+    async def send_group_message(self, gid: Union[str, int], content: str, file_path: str):
+
+        params = {
+            "gid": int(gid),
+            "content": content,
+            "st": await self.st(),
+            "_spr": "screen:2560x1440",
+        }
+
+        # todo 群组发送文件
+        if file_path:
+            self.logger.error(f"暂不支持向群组发送文件")
+            return {}
+        #     media_type = MEDIA.PHOTO.value
+        #     try:
+        #         fids = await self.upload_chat_file(tuid=int(gid), file_path=file_path)
+        #     except RequestError as e:
+        #         self.logger.error(f"文件上传失败 {e}")
+        #         return {}
+        #     params["media_type"] = media_type
+        #     params["content"] = ""
+        #     params["fids"] = fids
+
+        return await self.post("https://m.weibo.cn/api/groupchat/send", params=params)
+
     async def user_chat(self, uid: Union[str, int], since_id: int):
         params = {"count": 20, "uid": uid, "since_id": since_id}
         return await self.get("https://m.weibo.cn/api/chat/list", params=params)
